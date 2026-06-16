@@ -1,0 +1,81 @@
+[general]
+fast_mode = true
+proxy_secret_path = "proxy-secret"
+disable_colors = true
+log_level = "normal"
+use_middle_proxy = true
+
+me_reconnect_max_concurrent_per_dc = 6
+
+middle_proxy_pool_size = 12
+
+[general.modes]
+classic = false
+secure = false
+tls = true
+
+[general.links]
+show = "*"
+public_host = "__PUBLIC_HOST__"
+public_port = 8443
+
+[network]
+ipv4 = true
+ipv6 = false
+prefer = 4
+
+[server]
+port = 8443
+listen_addr_ipv4 = "0.0.0.0"
+
+[[server.listeners]]
+ip = "0.0.0.0"
+
+[server.api]
+enabled = true
+listen = "0.0.0.0:6064"
+whitelist = ["127.0.0.0/8", "100.64.0.0/10"]
+read_only = false
+minimal_runtime_enabled = true
+minimal_runtime_cache_ttl_ms = 1000
+auth_header = "Bearer __TELEMT_AUTH_TOKEN__"
+
+[censorship]
+tls_domain = "www.google.com"
+mask = true
+mask_port = 443
+fake_cert_len = 2048
+tls_emulation = true
+tls_front_dir = "tlsfront"
+
+tls_full_cert_ttl_secs = 0
+
+server_hello_delay_min_ms = 50
+server_hello_delay_max_ms = 150
+
+[access]
+replay_check_len = 262144
+replay_window_secs = 1800
+
+[access.users]
+__system = "__SYSTEM_SECRET__"
+
+[access.user_max_tcp_conns]
+__system = 1
+
+[access.user_max_unique_ips]
+__system = 1
+
+[[upstreams]]
+type = "direct"
+
+[timeouts]
+client_handshake = 10
+tg_connect = 8
+client_keepalive = 60
+
+me_one_retry = 6
+me_one_timeout_ms = 800
+
+[dc_overrides]
+"203" = "91.105.192.100:443"

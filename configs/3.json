@@ -1,0 +1,74 @@
+{
+	"log": {
+		"loglevel": "none",
+		"error": "none",
+		"access": "none"
+	},
+	"dns": {
+		"servers": ["1.1.1.1", "8.8.8.8"],
+		"queryStrategy": "UseIPv4"
+	},
+	"api": {
+		"tag": "api",
+		"services": ["HandlerService", "LoggerService", "StatsService"]
+	},
+	"inbounds": [
+		{
+			"tag": "api",
+			"listen": "127.0.0.1",
+			"port": 62789,
+			"protocol": "dokodemo-door",
+			"settings": {
+				"address": "127.0.0.1"
+			}
+		}
+	],
+	"outbounds": [
+		{
+			"protocol": "freedom",
+			"tag": "direct",
+			"streamSettings": {
+				"sockopt": {
+					"tcpNoDelay": true
+				}
+			},
+			"settings": {
+				"domainStrategy": "AsIs"
+			}
+		},
+		{
+			"tag": "blocked",
+			"protocol": "blackhole",
+			"settings": {}
+		}
+	],
+	"policy": {
+		"levels": {
+			"0": {
+				"handshake": 6,
+				"connIdle": 300,
+				"uplinkOnly": 2,
+				"downlinkOnly": 4,
+				"statsUserDownlink": true,
+				"statsUserUplink": true
+			}
+		},
+		"system": {
+			"statsInboundDownlink": true,
+			"statsInboundUplink": true,
+			"statsOutboundDownlink": false,
+			"statsOutboundUplink": false
+		}
+	},
+	"routing": {
+		"domainStrategy": "AsIs",
+		"rules": [
+			{
+				"type": "field",
+				"inboundTag": ["api"],
+				"outboundTag": "api"
+			}
+		]
+	},
+	"stats": {}
+}

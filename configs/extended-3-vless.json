@@ -1,0 +1,59 @@
+{
+	"log": {
+		"loglevel": "none",
+		"error": "none",
+		"access": "none"
+	},
+	"dns": {
+		"servers": ["1.1.1.1", "8.8.8.8"],
+		"queryStrategy": "UseIPv4"
+	},
+	"routing": {
+		"domainStrategy": "AsIs",
+		"rules": []
+	},
+	"inbounds": [
+		{
+			"listen": "0.0.0.0",
+			"port": 10000,
+			"protocol": "vless",
+			"tag": "vless",
+			"settings": {
+				"clients": [
+					{
+						"id": "",
+						"email": ""
+					}
+				],
+				"decryption": "none"
+			},
+			"streamSettings": {
+				"network": "tcp",
+				"security": "reality",
+				"realitySettings": {
+					"show": false,
+					"dest": "google.com:443",
+					"serverNames": ["google.com"],
+					"privateKey": "",
+					"maxTimeDiff": 0,
+					"shortIds": []
+				}
+			}
+		}
+	],
+	"outbounds": [
+		{
+			"protocol": "freedom",
+			"tag": "direct",
+			"streamSettings": {
+				"sockopt": {
+					"tcpNoDelay": true
+				}
+			}
+		},
+		{
+			"protocol": "blackhole",
+			"tag": "block"
+		}
+	]
+}

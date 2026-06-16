@@ -1,0 +1,54 @@
+{
+	"log": {
+		"loglevel": "none",
+		"error": "none",
+		"access": "none"
+	},
+	"dns": {
+		"servers": ["1.1.1.1", "8.8.8.8"],
+		"queryStrategy": "UseIPv4"
+	},
+	"routing": {
+		"domainStrategy": "AsIs",
+		"rules": []
+	},
+	"inbounds": [
+		{
+			"listen": "0.0.0.0",
+			"port": 10000,
+			"protocol": "shadowsocks",
+			"tag": "shadowsocks",
+			"settings": {
+				"method": "2022-blake3-aes-128-gcm",
+				"password": "",
+				"clients": [
+					{
+						"password": "",
+						"email": ""
+					}
+				],
+				"network": "tcp,udp"
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": ["http", "tls", "quic"],
+				"routeOnly": true
+			}
+		}
+	],
+	"outbounds": [
+		{
+			"protocol": "freedom",
+			"tag": "direct",
+			"streamSettings": {
+				"sockopt": {
+					"tcpNoDelay": true
+				}
+			}
+		},
+		{
+			"protocol": "blackhole",
+			"tag": "block"
+		}
+	]
+}

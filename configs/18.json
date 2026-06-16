@@ -1,0 +1,326 @@
+{
+	"log": {
+		"loglevel": "none",
+		"error": "none",
+		"access": "none"
+	},
+	"dns": {
+		"servers": [
+			"https://1.1.1.1/dns-query",
+			"https://8.8.8.8/dns-query"
+		],
+		"queryStrategy": "UseIPv4"
+	},
+	"api": {
+		"tag": "api",
+		"services": [
+			"HandlerService",
+			"LoggerService",
+			"StatsService"
+		]
+	},
+	"inbounds": [
+		{
+			"tag": "socks-hysteria",
+			"listen": "127.0.0.1",
+			"port": 40000,
+			"protocol": "socks",
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls",
+					"quic"
+				],
+				"routeOnly": true
+			},
+			"settings": {
+				"auth": "noauth",
+				"udp": true
+			},
+			"streamSettings": {
+				"sockopt": {
+					"tcpFastOpen": true,
+					"tcpNoDelay": true
+				}
+			}
+		},
+		{
+			"tag": "api",
+			"listen": "127.0.0.1",
+			"port": 62789,
+			"protocol": "dokodemo-door",
+			"settings": {
+				"address": "127.0.0.1"
+			}
+		}
+	],
+	"outbounds": [
+		{
+			"protocol": "freedom",
+			"tag": "direct",
+			"streamSettings": {
+				"sockopt": {
+					"tcpNoDelay": true
+				}
+			},
+			"settings": {
+				"domainStrategy": "AsIs"
+			}
+		},
+		{
+			"tag": "blocked",
+			"protocol": "blackhole",
+			"settings": {}
+		}
+	],
+	"policy": {
+		"levels": {
+			"0": {
+				"handshake": 6,
+				"connIdle": 300,
+				"uplinkOnly": 2,
+				"downlinkOnly": 4,
+				"statsUserDownlink": true,
+				"statsUserUplink": true
+			}
+		},
+		"system": {
+			"statsInboundDownlink": true,
+			"statsInboundUplink": true,
+			"statsOutboundDownlink": false,
+			"statsOutboundUplink": false
+		}
+	},
+	"routing": {
+		"domainStrategy": "AsIs",
+		"rules": [
+			{
+				"type": "field",
+				"ip": [
+					"1.1.1.1",
+					"8.8.8.8"
+				],
+				"balancerTag": "vpn-de"
+			},
+			{
+				"type": "field",
+				"domain": [
+					"domain:labs.google",
+					"domain:labs.google.com",
+					"domain:aistudio.google.com",
+					"domain:gemini.google.com",
+					"domain:clients6.google.com",
+					"domain:notebooklm.google",
+					"domain:notebooklm.google.com",
+					"domain:generativelanguage.googleapis.com",
+					"domain:notebooklm.google",
+					"domain:alkalimakersuite-pa.clients6.google.com",
+					"domain:clients6.google.com",
+					"domain:robinfrontend-pa.googleapis.com",
+					"domain:proactivebackend-pa.googleapis.com"
+				],
+				"outboundTag": "vpn-gemini"
+			},
+			{
+				"type": "field",
+				"domain": [
+					"domain:animelib.org",
+					"domain:anilib.me",
+					"domain:cdnlibs.org"
+				],
+				"outboundTag": "vpn-nl"
+			},
+			{
+				"type": "field",
+				"domain": [
+					"geosite:youtube"
+				],
+				"balancerTag": "vpn-youtube"
+			},
+			{
+				"type": "field",
+				"ip": [
+					"31.13.24.0/21",
+					"31.13.64.0/18",
+					"45.64.40.0/22",
+					"57.144.0.0/14",
+					"66.220.144.0/20",
+					"69.63.176.0/20",
+					"69.171.224.0/19",
+					"74.119.76.0/22",
+					"102.132.96.0/20",
+					"103.4.96.0/22",
+					"129.134.0.0/17",
+					"157.240.0.0/17",
+					"163.70.128.0/17",
+					"163.77.128.0/17",
+					"173.252.64.0/18",
+					"179.60.192.0/22",
+					"185.60.216.0/22",
+					"185.89.216.0/22",
+					"199.201.64.0/22",
+					"204.15.20.0/22",
+					"3.33.221.48/32",
+					"3.33.252.61/32",
+					"15.197.206.217/32",
+					"15.197.210.208/32"
+				],
+				"outboundTag": "vpn-nl"
+			},
+			{
+				"type": "field",
+				"domain": [
+					"domain:githubcopilot.com",
+					"domain:myanimelist.net",
+					"domain:rutor.info",
+					"domain:rutor.is",
+					"domain:bing.com",
+					"domain:mongodb.com",
+					"geosite:supercell",
+					"domain:arc.net",
+					"domain:diabrowser.com",
+					"domain:crunchyroll.com",
+					"domain:vrv.co",
+					"domain:crunchyrollcdn.com",
+					"domain:framer.com",
+					"domain:framerusercontent.com",
+					"domain:manus.im",
+					"domain:sms-activate.io",
+					"domain:qoder.com",
+					"domain:wplace.live",
+					"geosite:tiktok",
+					"domain:copilot.microsoft.com",
+					"domain:windsurf.com",
+					"domain:net.ua",
+					"domain:x.ai",
+					"domain:artstation.com"
+				],
+				"balancerTag": "vpn-de"
+			},
+			{
+				"type": "field",
+				"domain": [
+					"geosite:netflix",
+					"geosite:disney",
+					"geosite:pornhub",
+					"domain:openai.com",
+					"domain:chatgpt.com",
+					"domain:ttvnw.net",
+					"domain:twitch.tv",
+					"geosite:meta",
+					"domain:deepl.com",
+					"domain:elgato.com",
+					"domain:ttwstatic.com",
+					"domain:spotify.com",
+					"domain:grok.com",
+					"domain:4pda.to",
+					"domain:habr.com",
+					"geosite:instagram",
+					"domain:nvidia.com",
+					"domain:character.ai",
+					"domain:notion.com",
+					"domain:notion.so",
+					"domain:vinted.com",
+					"domain:vinted.pl",
+					"domain:klingai.com",
+					"domain:depop.com",
+					"domain:elevenlabs.io",
+					"domain:claude.ai",
+					"domain:byteoversea.com",
+					"domain:cloudflareinsights.com",
+					"domain:anthropic.com",
+					"domain:claude.com",
+					"domain:siftscience.com",
+					"domain:canva.com",
+					"domain:vestiairecollective.com",
+					"domain:mo.co",
+					"domain:proxywing.com",
+					"domain:adspower.net",
+					"domain:patreon.com",
+					"domain:sentry.io",
+					"domain:deezer.com",
+					"domain:xvideos.com",
+					"domain:ruads.org",
+					"domain:patreonusercontent.com",
+					"domain:cookielaw.org",
+					"domain:jmp.blue",
+					"domain:hetzner.com",
+					"domain:hetzner.cloud",
+					"domain:digitalocean.com",
+					"domain:dubybot.live",
+					"domain:genspark.ai",
+					"domain:jetbrains.com",
+					"domain:ahrefs.com",
+					"domain:stripe.com",
+					"domain:curseforge.com",
+					"domain:forgecdn.net",
+					"geosite:whatsapp"
+				],
+				"balancerTag": "vpn-de"
+			},
+			{
+				"ip": [
+					"91.108.56.0/22",
+					"91.108.4.0/22",
+					"91.108.8.0/22",
+					"91.108.16.0/22",
+					"91.108.12.0/22",
+					"149.154.160.0/20",
+					"91.105.192.0/23",
+					"91.108.20.0/22",
+					"185.76.151.0/24",
+					"95.161.64.0/20",
+					"109.239.140.0/24",
+					"2001:b28:f23d::/48",
+					"2001:b28:f23f::/48",
+					"2001:67c:4e8::/48",
+					"2001:b28:f23c::/48",
+					"2a0a:f280::/32"
+				],
+				"type": "field",
+				"outboundTag": "vpn-nl"
+			},
+			{
+				"type": "field",
+				"domain": [
+					"domain:cdn-telegram.org",
+					"domain:comments.app",
+					"domain:contest.com",
+					"domain:fragment.com",
+					"domain:graph.org",
+					"domain:quiz.directory",
+					"domain:t.me",
+					"domain:tdesktop.com",
+					"domain:telega.one",
+					"domain:telegra.ph",
+					"domain:telegram-cdn.org",
+					"domain:telegram.dog",
+					"domain:telegram.me",
+					"domain:telegram.org",
+					"domain:telegram.space",
+					"domain:telesco.pe",
+					"domain:tg.dev",
+					"domain:ton.org",
+					"domain:tx.me",
+					"domain:usercontent.dev"
+				],
+				"outboundTag": "vpn-nl"
+			},
+			{
+				"type": "field",
+				"port": "9339",
+				"network": "tcp,udp",
+				"balancerTag": "vpn-de"
+			},
+			{
+				"type": "field",
+				"inboundTag": [
+					"api"
+				],
+				"outboundTag": "api"
+			}
+		]
+	},
+	"stats": {}
+}

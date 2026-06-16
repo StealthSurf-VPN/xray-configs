@@ -1,0 +1,93 @@
+{
+	"log": {
+		"loglevel": "none",
+		"error": "none",
+		"access": "none"
+	},
+	"dns": {
+		"servers": [
+			"1.1.1.1",
+			"8.8.8.8"
+		],
+		"queryStrategy": "UseIPv4"
+	},
+	"routing": {
+		"domainStrategy": "AsIs",
+		"rules": [
+			{
+				"type": "field",
+				"domain": [
+					"domain:labs.google",
+					"domain:labs.google.com",
+					"domain:aistudio.google.com",
+					"domain:gemini.google.com",
+					"domain:clients6.google.com",
+					"domain:notebooklm.google",
+					"domain:notebooklm.google.com",
+					"domain:generativelanguage.googleapis.com",
+					"domain:notebooklm.google",
+					"domain:alkalimakersuite-pa.clients6.google.com",
+					"domain:clients6.google.com",
+					"domain:robinfrontend-pa.googleapis.com",
+					"domain:proactivebackend-pa.googleapis.com"
+				],
+				"outboundTag": "vpn-gemini"
+			}
+		]
+	},
+	"inbounds": [
+		{
+			"listen": "0.0.0.0",
+			"port": 10000,
+			"protocol": "vless",
+			"tag": "vless",
+			"settings": {
+				"clients": [
+					{
+						"id": "",
+						"email": ""
+					}
+				],
+				"decryption": "none"
+			},
+			"streamSettings": {
+				"network": "tcp",
+				"security": "reality",
+				"realitySettings": {
+					"show": false,
+					"dest": "google.com:443",
+					"serverNames": [
+						"google.com"
+					],
+					"privateKey": "",
+					"maxTimeDiff": 0,
+					"shortIds": []
+				}
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls",
+					"quic"
+				],
+				"routeOnly": true
+			}
+		}
+	],
+	"outbounds": [
+		{
+			"protocol": "freedom",
+			"tag": "direct",
+			"streamSettings": {
+				"sockopt": {
+					"tcpNoDelay": true
+				}
+			}
+		},
+		{
+			"protocol": "blackhole",
+			"tag": "block"
+		}
+	]
+}
