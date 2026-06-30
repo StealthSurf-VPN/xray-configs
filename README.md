@@ -59,6 +59,8 @@ Some files are named by internal `location_id`. These IDs map to StealthSurf ser
 | 32 | KZ | Kazakhstan |
 | 33 | CZ | Czech Republic |
 | 34 | BY | Belarus |
+| 35 | RB | Singapore |
+| 36 | SG | Smart Location (#2) |
 
 ## Notes
 

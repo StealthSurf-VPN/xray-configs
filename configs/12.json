@@ -4,10 +4,7 @@
 		"error": "none",
 		"access": "none"
 	},
-	"dns": {
-		"servers": ["https://8.8.8.8/dns-query", "https://1.1.1.1/dns-query"],
-		"queryStrategy": "UseIPv4"
-	},
+	"servers": ["https://8.8.8.8/dns-query", "https://1.1.1.1/dns-query"],
 	"api": {
 		"tag": "api",
 		"services": ["HandlerService", "LoggerService", "StatsService"]

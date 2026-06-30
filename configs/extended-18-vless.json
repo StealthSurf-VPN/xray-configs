@@ -5,10 +5,7 @@
 		"access": "none"
 	},
 	"dns": {
-		"servers": [
-			"https://1.1.1.1/dns-query",
-			"https://8.8.8.8/dns-query"
-		],
+		"servers": ["https://8.8.8.8/dns-query", "https://1.1.1.1/dns-query"],
 		"queryStrategy": "UseIPv4"
 	},
 	"routing": {
@@ -16,10 +13,7 @@
 		"rules": [
 			{
 				"type": "field",
-				"ip": [
-					"1.1.1.1",
-					"8.8.8.8"
-				],
+				"ip": ["1.1.1.1", "8.8.8.8"],
 				"balancerTag": "vpn-de"
 			},
 			{
@@ -52,9 +46,7 @@
 			},
 			{
 				"type": "field",
-				"domain": [
-					"geosite:youtube"
-				],
+				"domain": ["geosite:youtube"],
 				"balancerTag": "vpn-youtube"
 			},
 			{
@@ -71,7 +63,7 @@
 					"102.132.96.0/20",
 					"103.4.96.0/22",
 					"129.134.0.0/17",
-					"157.240.0.0/17",
+					"157.240.0.0/16",
 					"163.70.128.0/17",
 					"163.77.128.0/17",
 					"173.252.64.0/18",
@@ -181,6 +173,10 @@
 			{
 				"ip": [
 					"91.108.56.0/22",
+					"149.154.164.0/22",
+					"149.154.167.0/24",
+					"149.154.167.0/20",
+					"5.28.128.0/17",
 					"91.108.4.0/22",
 					"91.108.8.0/22",
 					"91.108.16.0/22",
@@ -255,9 +251,7 @@
 				"realitySettings": {
 					"show": false,
 					"dest": "google.com:443",
-					"serverNames": [
-						"google.com"
-					],
+					"serverNames": ["google.com"],
 					"privateKey": "",
 					"maxTimeDiff": 0,
 					"shortIds": []
@@ -265,11 +259,7 @@
 			},
 			"sniffing": {
 				"enabled": true,
-				"destOverride": [
-					"http",
-					"tls",
-					"quic"
-				],
+				"destOverride": ["http", "tls", "quic"],
 				"routeOnly": true
 			}
 		}
